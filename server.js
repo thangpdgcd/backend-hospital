@@ -1,4 +1,4 @@
-// medstaff-server/index.js
+// app.js
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 /**
- * API CHAT  (GIỮ NGUYÊN)
+ * API CHAT
  */
 app.post("/api/chat", async (req, res) => {
   try {
@@ -58,7 +58,6 @@ app.post("/api/chat", async (req, res) => {
 
 /**
  * API AI GENERATE SCHEDULE
- * body: { doctors: Doctor[], weekStart: string, currentShifts: ShiftCell[] }
  */
 app.post("/api/ai-generate-schedule", async (req, res) => {
   try {
@@ -68,7 +67,6 @@ app.post("/api/ai-generate-schedule", async (req, res) => {
       return res.status(400).json({ error: "doctors must be an array" });
     }
 
-    // Prompt cho model: yêu cầu TRẢ VỀ JSON
     const userPayload = {
       doctors,
       weekStart,
@@ -83,7 +81,7 @@ app.post("/api/ai-generate-schedule", async (req, res) => {
       },
       body: JSON.stringify({
         model: "gpt-4.1-mini",
-        response_format: { type: "json_object" }, // yêu cầu JSON
+        response_format: { type: "json_object" },
         messages: [
           {
             role: "system",
@@ -142,7 +140,5 @@ Rules:
   }
 });
 
-const port = process.env.PORT || 5001;
-app.listen(port, () => {
-  console.log(`MedStaff AI server running at http://localhost:${port}`);
-});
+// ❗ KHÔNG app.listen ở đây
+module.exports = app;
